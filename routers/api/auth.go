@@ -1,15 +1,15 @@
 package api
 
 import (
-	"log"
+	"Bloggor/pkg/logging"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/astaxie/beego/validation"
+	"github.com/gin-gonic/gin"
 
+	"Bloggor/models"
 	"Bloggor/pkg/e"
 	"Bloggor/pkg/util"
-	"Bloggor/models"
 )
 
 type auth struct {
@@ -44,7 +44,7 @@ func GetAuth(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			log.Println(err.Key, err.Message)
+			logging.Info(err.Key, err.Message)
 		}
 	}
 
