@@ -5,9 +5,11 @@ import (
 	"Bloggor/pkg/logging"
 	"Bloggor/routers/api"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 
-	"Bloggor/routers/api/v1"
 	"Bloggor/pkg/setting"
+	"Bloggor/routers/api/v1"
 )
 
 func InitRouter() *gin.Engine {
@@ -20,7 +22,7 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(setting.RunMode)
 
 	r.GET("/auth", api.GetAuth)	//获取token
-
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())	//使用jwt中间件
 	{

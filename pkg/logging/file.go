@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	LogSavePath = "runtime/logs/"
+	LogSavePath = "runtime\\logs"
 	LogSaveName = "log"
 	LogFileExt = "log"
 	TimeFormat = "20060102"
@@ -16,7 +16,7 @@ var (
 
 func getLogFilePath() string {
 	dir, _ := os.Getwd()
-	path := dir + "/" + LogSavePath
+	path := dir + "\\" + LogSavePath
 	log.Printf("Log file path : %s", path)
 	return fmt.Sprintf("%s", path)
 }
@@ -32,7 +32,7 @@ func openLogFile(filePath string) *os.File {
 	_, err := os.Stat(filePath)	//返回文件信息结构描述文件。如果出现错误，会返回*PathError
 	switch {
 	case os.IsNotExist(err):	//能够接受ErrNotExist、syscall的一些错误，它会返回一个布尔值，能够得知文件不存在或目录不存在
-		mkDir()
+		//mkDir()
 	case os.IsPermission(err):	//能够接受ErrPermission、syscall的一些错误，它会返回一个布尔值，能够得知权限是否满足
 		log.Fatalf("Permission :%v", err)
 	}
