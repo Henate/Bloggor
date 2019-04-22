@@ -1,11 +1,10 @@
 package main
 
 import (
-	"Bloggor/routers"
+	"github.com/Henate/Bloggor/routers"
 	"fmt"
 	"net/http"
-
-	"Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/pkg/setting"
 )
 
 func main() {

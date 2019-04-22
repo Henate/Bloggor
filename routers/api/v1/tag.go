@@ -3,15 +3,12 @@ package v1
 import (
 	"github.com/astaxie/beego/validation"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
-	//"github.com/astaxie/beego/validation"
 	"github.com/Unknwon/com"
-
-	"Bloggor/pkg/e"
-	"Bloggor/models"
-	"Bloggor/pkg/util"
-	"Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/pkg/e"
+	"github.com/Henate/Bloggor/models"
+	"github.com/Henate/Bloggor/pkg/util"
+	"github.com/Henate/Bloggor/pkg/setting"
 )
 
 //获取多个文章标签
@@ -43,7 +40,13 @@ func GetTags(c *gin.Context) {
 	})
 }
 
-//新增文章标签
+// @Summary 新增文章标签
+// @Produce  json
+// @Param name query string true "Name"
+// @Param state query int false "State"
+// @Param created_by query int false "CreatedBy"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/tags [post]
 func AddTag(c *gin.Context) {
 	name := c.Query("name")
 	state := com.StrTo(c.DefaultQuery("state", "0")).MustInt()

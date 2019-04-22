@@ -4,11 +4,9 @@ import (
 	"log"
 	"fmt"
 	"time"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-
-	"Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/pkg/setting"
 )
 
 var db *gorm.DB

@@ -1,15 +1,13 @@
 package api
 
 import (
-	"Bloggor/pkg/logging"
+	"github.com/Henate/Bloggor/pkg/logging"
 	"net/http"
-
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
-
-	"Bloggor/models"
-	"Bloggor/pkg/e"
-	"Bloggor/pkg/util"
+	"github.com/Henate/Bloggor/models"
+	"github.com/Henate/Bloggor/pkg/e"
+	"github.com/Henate/Bloggor/pkg/util"
 )
 
 type auth struct {

@@ -3,8 +3,7 @@ package util
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/Unknwon/com"
-
-	"Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/pkg/setting"
 )
 
 func GetPage(c *gin.Context) int {

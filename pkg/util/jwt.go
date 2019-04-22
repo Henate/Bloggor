@@ -2,10 +2,8 @@ package util
 
 import (
 	"time"
-
 	jwt "github.com/dgrijalva/jwt-go"
-
-	"Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/pkg/setting"
 )
 
 var jwtSecret = []byte(setting.JwtSecret)

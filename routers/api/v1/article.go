@@ -3,16 +3,14 @@ package v1
 import (
 	"log"
 	"net/http"
-	"Bloggor/pkg/logging"
-
+	"github.com/Henate/Bloggor/pkg/logging"
 	"github.com/gin-gonic/gin"
 	"github.com/astaxie/beego/validation"
 	"github.com/Unknwon/com"
-
-	"Bloggor/models"
-	"Bloggor/pkg/e"
-	"Bloggor/pkg/setting"
-	"Bloggor/pkg/util"
+	"github.com/Henate/Bloggor/models"
+	"github.com/Henate/Bloggor/pkg/e"
+	"github.com/Henate/Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/pkg/util"
 )
 
 //获取单个文章

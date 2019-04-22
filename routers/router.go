@@ -1,15 +1,15 @@
 package routers
 
 import (
-	"Bloggor/middleware/jwt"
-	"Bloggor/pkg/logging"
-	"Bloggor/routers/api"
+	"github.com/Henate/Bloggor/middleware/jwt"
+	"github.com/Henate/Bloggor/pkg/logging"
+	"github.com/Henate/Bloggor/routers/api"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
-	"Bloggor/pkg/setting"
-	"Bloggor/routers/api/v1"
+	"github.com/Henate/Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/routers/api/v1"
 )
 
 func InitRouter() *gin.Engine {
