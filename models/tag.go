@@ -1,5 +1,9 @@
 package models
 
+import (
+	"fmt"
+)
+
 type Tag struct {
 	Model
 
@@ -73,6 +77,12 @@ func DeleteTag(id int) bool {
 
 func EditTag(id int, data interface {}) bool {
 	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
+	return true
+}
+
+func CleanAllTag() bool {
+	//db.Unscoped().Where("deleted_on != ? ", 0).Delete(&Tag{})
+	fmt.Println("clearTag")
 
 	return true
 }
