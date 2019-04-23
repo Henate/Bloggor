@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/Henate/Bloggor/routers"
 	"fmt"
-	"net/http"
 	"github.com/Henate/Bloggor/pkg/setting"
+	"github.com/Henate/Bloggor/routers"
+	"net/http"
 )
 
 func main() {
@@ -17,6 +17,6 @@ func main() {
 		WriteTimeout:   setting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
-
+	//heartbeat.CronInit()
 	s.ListenAndServe()
 }

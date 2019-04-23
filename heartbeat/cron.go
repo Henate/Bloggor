@@ -1,4 +1,4 @@
-package main
+package heartbeat
 
 import (
 	"time"
@@ -9,7 +9,7 @@ import (
 	"github.com/Henate/Bloggor/models"
 )
 
-func main() {
+func CronInit() {
 	log.Println("Starting...")
 
 	c := cron.New()	//根据本地时间创建一个新（空白）的 Cron job runner
