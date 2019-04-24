@@ -1,13 +1,36 @@
 package main
 
 import (
-	"fmt"
+	"github.com/Henate/Bloggor/models"
+	"github.com/Henate/Bloggor/pkg/logging"
 	"github.com/Henate/Bloggor/pkg/setting"
 	"github.com/Henate/Bloggor/routers"
-	"net/http"
+	"github.com/fvbock/endless"
+	"log"
+	"syscall"
+	"fmt"
 )
 
 func main() {
+	setting.Setup()
+	models.Setup()
+	logging.Setup()
+
+	endless.DefaultReadTimeOut = setting.ServerSetting.ReadTimeout
+	endless.DefaultWriteTimeOut = setting.ServerSetting.WriteTimeout
+	endless.DefaultMaxHeaderBytes = 1 << 20
+	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
+
+	server := endless.NewServer(endPoint, routers.InitRouter())
+	server.BeforeBegin = func(add string) {
+		log.Printf("Actual pid is %d", syscall.Getpid())
+	}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Printf("Server err: %v", err)
+	}
+	/*old config
 	router := routers.InitRouter()
 
 	s := &http.Server{
@@ -17,6 +40,8 @@ func main() {
 		WriteTimeout:   setting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
+
 	//heartbeat.CronInit()
 	s.ListenAndServe()
+	*/
 }
