@@ -3,10 +3,12 @@ package routers
 import (
 	"github.com/Henate/Bloggor/middleware/jwt"
 	"github.com/Henate/Bloggor/pkg/logging"
+	"github.com/Henate/Bloggor/pkg/upload"
 	"github.com/Henate/Bloggor/routers/api"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"net/http"
 
 	"github.com/Henate/Bloggor/pkg/setting"
 	"github.com/Henate/Bloggor/routers/api/v1"
@@ -20,7 +22,7 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 
 	gin.SetMode(setting.ServerSetting.RunMode)
-
+	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 	r.GET("/auth", api.GetAuth)	//获取token
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)

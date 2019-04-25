@@ -14,6 +14,7 @@ func UploadImage(c *gin.Context) {
 	code := e.SUCCESS
 	data := make(map[string]string)
 
+	//post框中key值为image
 	file, image, err := c.Request.FormFile("image")
 	if err != nil {
 		logging.Warn(err)
