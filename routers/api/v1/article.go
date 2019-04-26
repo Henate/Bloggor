@@ -103,7 +103,8 @@ func AddArticle(c *gin.Context) {
 
 	code := e.INVALID_PARAMS
 	if ! valid.HasErrors() {
-		if models.ExistTagByID(tagId) {
+		id,_ := models.ExistTagByID(tagId)
+		if id {
 			data := make(map[string]interface {})
 			data["tag_id"] = tagId
 			data["title"] = title
@@ -157,7 +158,8 @@ func EditArticle(c *gin.Context) {
 	code := e.INVALID_PARAMS
 	if ! valid.HasErrors() {
 		if models.ExistArticleByID(id) {
-			if models.ExistTagByID(tagId) {
+			mid,_ := models.ExistTagByID(tagId)
+			if  mid{
 				data := make(map[string]interface {})
 				if tagId > 0 {
 					data["tag_id"] = tagId

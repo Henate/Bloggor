@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/Henate/Bloggor/middleware/jwt"
+	"github.com/Henate/Bloggor/pkg/export"
 	"github.com/Henate/Bloggor/pkg/logging"
 	"github.com/Henate/Bloggor/pkg/upload"
 	"github.com/Henate/Bloggor/routers/api"
@@ -23,9 +24,11 @@ func InitRouter() *gin.Engine {
 
 	gin.SetMode(setting.ServerSetting.RunMode)
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
+
 	r.GET("/auth", api.GetAuth)	//获取token
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)
+
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())	//使用jwt中间件
 	{
@@ -48,6 +51,9 @@ func InitRouter() *gin.Engine {
 		apiv1.PUT("/articles/:id", v1.EditArticle)
 		//删除指定文章
 		apiv1.DELETE("/articles/:id", v1.DeleteArticle)
+		apiv1.StaticFS("/export", http.Dir(export.GetExcelFullPath()))
+		apiv1.POST("/tags/export", v1.ExportTag)
+		apiv1.POST("/tags/import", v1.ImportTag)
 	}
 
 	return r

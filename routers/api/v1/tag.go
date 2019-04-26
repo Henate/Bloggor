@@ -1,6 +1,10 @@
 package v1
 
 import (
+	"github.com/Henate/Bloggor/pkg/app"
+	"github.com/Henate/Bloggor/pkg/export"
+	"github.com/Henate/Bloggor/pkg/logging"
+	"github.com/Henate/Bloggor/service/tag.go"
 	"github.com/astaxie/beego/validation"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -30,8 +34,8 @@ func GetTags(c *gin.Context) {
 
 	code := e.SUCCESS
 
-	data["lists"] = models.GetTags(util.GetPage(c), setting.AppSetting.PageSize, maps)
-	data["total"] = models.GetTagTotal(maps)
+	data["lists"], _ = models.GetTags(util.GetPage(c), setting.AppSetting.PageSize, maps)
+	data["total"], _ = models.GetTagTotal(maps)
 
 	c.JSON(http.StatusOK, gin.H{
 		"code" : code,
@@ -62,7 +66,8 @@ func AddTag(c *gin.Context) {
 	code := e.INVALID_PARAMS
 	if ! valid.HasErrors() {
 		//判断tag是否存在，若不存在则可以新建tag
-		if ! models.ExistTagByName(name) {
+		isExist,_ := models.ExistTagByName(name)
+		if ! isExist {
 			code = e.SUCCESS
 			models.AddTag(name, state, createdBy)
 		} else {
@@ -99,7 +104,8 @@ func EditTag(c *gin.Context) {
 	code := e.INVALID_PARAMS
 	if ! valid.HasErrors() {
 		code = e.SUCCESS
-		if models.ExistTagByID(id) {
+		isExist,_:= models.ExistTagByID(id)
+		if  isExist{
 			data := make(map[string]interface{})
 			data["modified_by"] = modifiedBy
 			if name != "" {
@@ -132,7 +138,8 @@ func DeleteTag(c *gin.Context) {
 	code := e.INVALID_PARAMS
 	if ! valid.HasErrors() {
 		code = e.SUCCESS
-		if models.ExistTagByID(id) {
+		isExist,_:= models.ExistTagByID(id)
+		if  isExist{
 			models.DeleteTag(id)
 		} else {
 			code = e.ERROR_NOT_EXIST_TAG
@@ -146,3 +153,48 @@ func DeleteTag(c *gin.Context) {
 	})
 }
 
+func ExportTag(c *gin.Context) {
+	appG := app.Gin{C: c}
+	name := c.PostForm("name")
+	state := -1
+	if arg := c.PostForm("state"); arg != "" {
+		state = com.StrTo(arg).MustInt()
+	}
+
+	tagService := tag_service.Tag{
+		Name:  name,
+		State: state,
+	}
+
+	filename, err := tagService.Export()
+	if err != nil {
+		appG.Response(http.StatusOK, e.ERROR_EXPORT_TAG_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"export_url":      export.GetExcelFullUrl(filename),
+		"export_save_url": export.GetExcelPath() + filename,
+	})
+}
+
+func ImportTag(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	file, _, err := c.Request.FormFile("file")
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR, nil)
+		return
+	}
+
+	tagService := tag_service.Tag{}
+	err = tagService.Import(file)
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR_IMPORT_TAG_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
